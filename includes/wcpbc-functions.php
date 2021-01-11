@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string
  */
 function wcpbc_get_woocommerce_zipcode() {
-	$code = WC()->customer->get_postcode();	
+	$code = WC()->customer->get_billing_postcode();
 
 	if ( $code !== WC()->customer->get_shipping_postcode() && WC()->customer->get_shipping_postcode() ) {
 		$code = WC()->customer->get_shipping_postcode();	
