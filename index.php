@@ -45,7 +45,7 @@ class WC_Product_Price_Based_ZipCode {
 	public $version = '0.1';
 
 	/**
-	 * @var The single instance of the class		 
+	 * @var The single instance of the class
 	 */
 	protected static $_instance = null;
 
@@ -78,26 +78,26 @@ class WC_Product_Price_Based_ZipCode {
 	/**
 	 * WC_Product_Price_Based_ZipCode Constructor.
 	 */
-	public function __construct() {						
-		$this->includes();	
-		$this->init_hooks();		
-	}		
+	public function __construct() {
+		$this->includes();
+		$this->init_hooks();
+	}
 	
 	/**
 	 * Include required files used in admin and on the frontend.
 	 */
-	private function includes() {		
+	private function includes() {
 
-		include_once( 'includes/wcpbc-functions.php' );				
+		include_once( 'includes/wcpbc-functions.php' );
 		if ( $this->is_request( 'admin') ) {
 			include_once( 'includes/class-wcpbc-install.php' );
-			include_once( 'includes/admin/class-wcpbc-admin.php' );												
+			include_once( 'includes/admin/class-wcpbc-admin.php' );
 
 		} elseif ( $this->is_request( 'frontend') ) {
 			include_once( 'includes/class-wcpbc-frontend.php' );
-			include_once( 'includes/class-wcpbc-customer.php' );			
+			include_once( 'includes/class-wcpbc-customer.php' );
 			include_once( 'includes/class-wcpbc-product-price.php' );
-			include_once( 'includes/class-wcpbc-country-selector.php' );			
+			include_once( 'includes/class-wcpbc-country-selector.php' );
 		}
 	}
 	
@@ -106,9 +106,9 @@ class WC_Product_Price_Based_ZipCode {
 	 */
 	private function init_hooks() {
 		register_activation_hook( __FILE__, array( 'WCPBC_Install', 'install' ) );
-		add_action( 'widgets_init', array($this, 'register_widgets') );		
-		if ( ! $this->is_request( 'admin') && $this->is_request( 'frontend') ) {			
-			add_action( 'woocommerce_init', array( $this , 'frontend_init'), 50 );				
+		add_action( 'widgets_init', array($this, 'register_widgets') );
+		if ( ! $this->is_request( 'admin') && $this->is_request( 'frontend') ) {
+			add_action( 'woocommerce_init', array( $this , 'frontend_init'), 50 );
 		}
 	}
 	
@@ -122,7 +122,7 @@ class WC_Product_Price_Based_ZipCode {
 		$is_ajax = defined('DOING_AJAX') && DOING_AJAX;
 
 		switch ( $type ) {
-			case 'admin' :							
+			case 'admin' :
 				$ajax_allow_actions = array( 'woocommerce_add_variation', 'woocommerce_load_variations', 'woocommerce_save_variations' );
 				return ( is_admin() && !$is_ajax ) || ( is_admin() && $is_ajax && isset( $_POST['action'] ) && in_array( $_POST['action'], $ajax_allow_actions ) );
 			
@@ -140,7 +140,7 @@ class WC_Product_Price_Based_ZipCode {
 	 *
 	 * @since 1.5.0
 	 */
-	 public function register_widgets(){	 	
+	 public function register_widgets(){
 	 	include_once( 'includes/class-wcpbc-widget-country-selector.php' );	
 	 	register_widget( 'WCPBC_Widget_Country_Selector' );
 	 }
@@ -148,18 +148,18 @@ class WC_Product_Price_Based_ZipCode {
 	/**
 	 * Init front-end variables
 	 */
-	 public function frontend_init(){	 	
-		$this->customer = new WCPBC_Customer();		
+	 public function frontend_init(){
+		$this->customer = new WCPBC_Customer();
 	 }
-	 
+
 	/**
 	 * Get regions
 	 * @return array
 	 */
 	public function get_regions(){
 		if ( is_null( $this->regions ) ) {
-			$this->regions = get_option( 'wc_price_based_country_regions', array() );			
-		}		
+			$this->regions = get_option( 'wc_price_based_country_regions', array() );
+		}
 		return $this->regions;
 	}
 	
@@ -167,7 +167,7 @@ class WC_Product_Price_Based_ZipCode {
 	 * Get the plugin url.
 	 * @return string
 	 */
-	public function plugin_url() {		
+	public function plugin_url() {
 		return plugin_dir_url( __FILE__ );
 	}
 
@@ -178,7 +178,7 @@ class WC_Product_Price_Based_ZipCode {
 	
 	public function plugin_path(){
 		return plugin_dir_path( __FILE__ );
-	}		
+	}
 
 }
 
@@ -207,14 +207,14 @@ if ( ! function_exists( 'is_woocommerce_active' ) ) {
 		if ( is_multisite() ) {
 			$active_plugins = array_merge( $active_plugins, get_site_option( 'active_sitewide_plugins', array() ) );
 		}
-		
+
 		return in_array( 'woocommerce/woocommerce.php', $active_plugins ) || array_key_exists( 'woocommerce/woocommerce.php', $active_plugins );
 	}
 }
 
 
 /**
- * WooCommerce inactive notice. 
+ * WooCommerce inactive notice.
  *
  * @since  1.5.4
  */
@@ -224,7 +224,7 @@ function wcpbczip_woocommerce_inactive_notice() {
 		printf( __( '%1$sWooCommerce Price Based Country is inactive%2$s. %3$sWooCommerce plugin %4$s must be active for Price Based Country to work. Please %5$sinstall and activate WooCommerce &raquo;%6$s', 'wc-price-based-zipcode' ), '<strong>', '</strong>', '<a href="http://wordpress.org/extend/plugins/woocommerce/">', '</a>', '<a href="' . esc_url( admin_url( 'plugins.php' ) ) . '">', '</a>' );
 		echo '</p></div>';
 	}
-}	
+}
 
 /*
  * Initialize
