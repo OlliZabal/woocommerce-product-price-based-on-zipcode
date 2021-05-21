@@ -28,11 +28,12 @@ class WCPBC_Customer {
 	 * @access public
 	 */
 
-	public function __construct() {		
+	public function __construct() {
+	
+
+		$this->_data = WC()->session->get( 'wcpbc_customer' );
 		
-		$this->_data = WC()->session->get( 'wcpbc_customer' );	
-		
-		$wc_customer_zipcode = wcpbc_get_woocommerce_zipcode();					
+		$wc_customer_zipcode = wcpbc_get_woocommerce_zipcode();
 		if ( empty( $this->_data ) || ! $this->zipcode_exists( $wc_customer_zipcode, $this->_data ) || ( $this->timestamp < get_option( 'wc_price_based_country_timestamp' ) ) ) {
 
 			$this->set_zipcode( $wc_customer_zipcode );
@@ -43,8 +44,8 @@ class WCPBC_Customer {
 		}
 
 		// When leaving or ending page load, store data
-		add_action( 'shutdown', array( $this, 'save_data' ), 10 );	
-	}	
+		add_action( 'shutdown', array( $this, 'save_data' ), 10 );
+	}
 
 	/**
 	 * save_data function.
@@ -54,8 +55,8 @@ class WCPBC_Customer {
 	public function save_data() {
 		
 		if ( $this->_changed ) {
-			WC()->session->set( 'wcpbc_customer', $this->_data );				
-		}	
+			WC()->session->set( 'wcpbc_customer', $this->_data );
+		}
 
 	}
 	/**
@@ -97,7 +98,7 @@ class WCPBC_Customer {
 		$value = isset( $this->_data[ $property ] ) ? $this->_data[ $property ] : '';
 
 		if ( $property === 'zipcodes' && ! $value) {
-			$value = array();			
+			$value = array();
 		}
 
 		return $value;
@@ -150,7 +151,7 @@ class WCPBC_Customer {
 
 		$this->_changed = true;
 		return $has_region;
-	}		
+	}
 }
 
 endif;
