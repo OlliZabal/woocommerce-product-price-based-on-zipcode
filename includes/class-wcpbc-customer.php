@@ -29,7 +29,14 @@ class WCPBC_Customer {
 	 */
 
 	public function __construct() {
+		if (strpos($_SERVER['REQUEST_URI'], 'wp-json') !== false) {
+			return false;
+		}
 	
+		/* BOF HINZUGEFÜGT ***GOH */
+		WC()->session = new WC_Session_Handler();
+		WC()->session->init();
+		/* EOF HINZUGEFÜGT ***GOH */
 
 		$this->_data = WC()->session->get( 'wcpbc_customer' );
 		
