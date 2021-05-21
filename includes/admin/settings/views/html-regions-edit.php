@@ -45,7 +45,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				</select>
 			</td>
 		</tr>
-		
+
 
 		<!-- Exchange rate -->
 		<tr valign="top">
